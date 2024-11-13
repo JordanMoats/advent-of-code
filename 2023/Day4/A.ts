@@ -1,18 +1,35 @@
 import { day4 } from "../input"
 
-const calcScore = (winningNums: String[], nums: String[]) => {
-    let winningCount = 0;
+interface Card {
+    gameNum: number;
+    winningNums: number[];
+    nums: number[];
+}
 
-    for (const num of nums) {
-        if (winningNums.includes(num)) {
-            winningCount++;
-        }
+const getCard = (line: string): Card => {
+    const [gameNumString, numStrings] = line.split(":");
+
+    const gameNum = parseInt(gameNumString.split(" ")[1]);
+
+    const [winningNumsString, numsString] = numStrings.split(" | ");
+    const winningNums = winningNumsString.trim().split(/\s+/).map(Number);
+    const nums = numsString.trim().split(/\s+/).map(Number);
+
+    
+    return {
+        gameNum,
+        winningNums,
+        nums
     }
+}
 
-    if (winningCount <= 0) {
+const calcScore = (card: Card): number => {
+    const matchCount: number = card.nums.filter(num => card.winningNums.includes(num)).length;
+
+    if (matchCount === 0) {
         return 0;
     } else {
-        return 1 * (Math.pow(2, winningCount - 1));
+        return Math.pow(2, matchCount -1);
     }
 }
 
@@ -20,18 +37,15 @@ const run = () => {
     const input: string = day4.main;
     const lines = input.split('\n');
 
+    const cards = lines.map(line => {
+        return getCard(line);
+    });
+
     let sum = 0;
-    for (const line of lines) {
-        const linePieces = line.split(":");
-        const [winningNumString, numString] = linePieces[1].split("|");
-        const winningNums = winningNumString.trim().replace("  ", " ").split(" ");
-        const nums = numString.trim().replace("  ", " ").split(" ");
 
-        const score = calcScore(winningNums, nums);
-        sum += score;
-        console.log(`line: ${line}, score: ${score}`);
+    for (const card of cards) {
+        sum += calcScore(card);
     }
-
-    console.log(sum);
+    console.log(`Sum: ${sum}`);
 }
-run()
+run();

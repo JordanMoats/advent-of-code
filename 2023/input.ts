@@ -1111,6 +1111,18 @@ Game 98: 3 green, 4 blue, 7 red; 7 red, 8 green; 7 green, 16 red, 1 blue; 8 gree
 Game 99: 6 green, 12 red, 1 blue; 5 blue, 1 red, 7 green; 5 green, 7 red, 10 blue; 8 blue, 1 red, 7 green; 17 red, 4 blue, 9 green
 Game 100: 6 blue, 10 green; 3 green, 4 blue, 1 red; 7 blue, 1 red, 12 green`
 }
+export const day3 = {
+    sample: `467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..`
+}
 export const day4 = {
     main: `Card   1: 99 46 62 92 60 37 52 56 41 31 | 83 40 31 33 46  3 10 39 82  8 64 35  5 63 60 72 48 87 11 81 95 34 97 37 99
 Card   2: 98 96 50 60  7 40 83 93 55 26 | 45 38 47 98 32 50 55 35 93 11 97 53 74 83 99 60 73 56 40 58 96 66 90 26  7

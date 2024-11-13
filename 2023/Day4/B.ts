@@ -1,55 +1,51 @@
-import { day4 } from "../input";
+import { day4 } from "../input"
 
-function getCard(line: string) {
-    let lineParts = line.split(":");
-
-    let match = lineParts[0].match(/\d+/)!;
-    let cardNum: number = parseInt(match[0]); // default to 0 to avoid bug fixing
-
-    let arrays = lineParts[1].split("|").map((arrayString) => {
-        return arrayString.trim().split(/\s+/).map(Number);
-    });
-
-    let points = arrays[0].filter((num) => {
-        return arrays[1].includes(num);
-    }).length;
-
-    return { cardID: cardNum, points: points };
+interface Card {
+    gameNum: number;
+    winningNums: number[];
+    nums: number[];
 }
 
-function run(){
-    const input = day4.main;
-    const lines = input.split("\n");
+const getCard = (line: string): Card => {
+    const [gameNumString, numStrings] = line.split(":");
 
-    // card id and number of matches on that card.
-    const cardPointsMap = new Map<number, number>()
-    lines.forEach((line) => {
-        const {cardID, points } = getCard(line);
-        cardPointsMap.set(cardID, points);
+    const gameNum = parseInt(gameNumString.split(" ")[1]);
+
+    const [winningNumsString, numsString] = numStrings.split(" | ");
+    const winningNums = winningNumsString.trim().split(/\s+/).map(Number);
+    const nums = numsString.trim().split(/\s+/).map(Number);
+
+    
+    return {
+        gameNum,
+        winningNums,
+        nums
+    }
+}
+
+const calcScore = (card: Card): number => {
+    const matchCount: number = card.nums.filter(num => card.winningNums.includes(num)).length;
+
+    if (matchCount === 0) {
+        return 0;
+    } else {
+        return Math.pow(2, matchCount -1);
+    }
+}
+
+const run = () => {
+    const input: string = day4.main;
+    const lines = input.split('\n');
+
+    const cards = lines.map(line => {
+        return getCard(line);
     });
 
-    const cardCountMap = new Map<number, number>();
-    for(let i = 1; i <= cardPointsMap.size; i++) {
-        cardCountMap.set(i, 1);
-    }
-
-    cardPointsMap.forEach((points, cardNum) => {
-        let numOfCards = cardCountMap.get(cardNum)!;
-        while(points > 0) {
-            let newCardWon = cardNum + points;
-            let currentCount = cardCountMap.get(newCardWon)!;
-            currentCount += numOfCards;
-            cardCountMap.set(newCardWon, currentCount);
-            points--;
-        }
-    })
-
     let sum = 0;
-    cardCountMap.forEach((cardCount, cardNum) => {
-        sum += cardCount;
-    })
 
-    console.log(sum);
-
+    for (const card of cards) {
+        sum += calcScore(card);
+    }
+    console.log(`Sum: ${sum}`);
 }
 run();

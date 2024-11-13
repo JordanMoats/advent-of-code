@@ -1,4 +1,4 @@
-import { day1 } from "../input.ts";
+import { day1 } from "../input";
 
 const input = day1.main;
 const sections = input.split("\n\n");

@@ -1,4 +1,3 @@
-import { comma } from "postcss/lib/list";
 import { day7 } from "../input";
 
 const input = day7.sample;
